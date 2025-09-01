@@ -1,0 +1,441 @@
+##########################################################################........Sin........
+
+t = 0:0.01:1;                % smaller step for smoother curve
+a = 2;
+b = a * cos(2*pi*2*t);
+
+subplot(3,3,1);
+plot(t, b, 'b', 'LineWidth', 1.5);   % smooth cosine wave
+xlabel('time');
+ylabel('Amplitude');
+title('Cosinewave');
+
+
+n = -5:5;
+a =[zeros(1,5),ones(1,6)];
+a =[zeros(1,5),ones(1,1),zeros(1,5)];
+plot(n, a, 'a', 'Linewidth' , 1.5);
+
+
+#############################################################.........Linear Conv...........
+
+x1,x2=sequence;
+f = conv(x1,x2);
+disp(f);
+###########################################################.......dft,fft,idft...........
+(1). x = sequence;
+     N = length;
+     xk = fft(x);
+
+(2). n = point
+     ndft = fft(x,n);
+
+ (3). nidft =idft(x);
+
+4)))x = input('Enter Sequence:');
+N = length(x);
+xk = fft(x);
+n = 0:N-1;
+subplot(2,2,1);
+stem(n,x);
+xlabel('n');
+ylabel('Amplitude');
+title('Input Frequency');
+
+
+subplot(2,2,2);
+stem(n,abs(xk));
+xlabel('n');
+ylabel('Magnitude');
+title('Magnitude Frequency');
+
+
+subplot(2,2,3);
+stem(n,angle(xk));
+xlabel('n');
+ylabel('Phase');
+title('Phase Frequency');
+
+
+
+#################################.............. Operation :.....................
+
+1) Mean 
+mean_manual = sum(x)/n;
+
+mean_builtin = mean(x);
+
+2) Standard deviation
+
+std_manual = sqrt(sum((x - mean_manual).^2)/(n-1));  % sample std
+std_builtin = std(x);
+
+3) Variance
+
+var_manual = sum((x - mean_manual).^2)/(n-1);  % sample variance
+var_builtin = var(x);
+
+4) Covariance
+
+cov_manual = sum((x - mean_manual).*(y - mean(y)))/(n-1);
+cov_builtin = cov(x, y);  
+
+5) Corelation
+
+
+corr_manual = cov_manual/(std_manual*std(y));
+corr_builtin = corr(x', y');  % 
+
+6. Skewness
+
+skew_manual = (sum((x - mean_manual).^3)/n) / ( (sum((x - mean_manual).^2)/n)^(3/2) );
+skew_builtin = skewness(x);
+
+7.Kurtasis
+
+kurt_manual = (sum((x - mean_manual).^4)/n) / ( (sum((x - mean_manual).^2)/n)^2 );
+kurt_builtin = kurtosis(x);
+
+
+#########################################################################.....Sampling.............
+
+% Continuous-Time Signal
+T = -100:0.01:100;
+fm = 0.02;
+x = cos(2 * pi * T * fm);
+subplot(2, 2, 1);
+plot(T, x);
+xlabel('t');
+ylabel('x(t)');
+title('Continuous Time Signal');
+
+% Discrete-Time Signal 1 (fs > 2fm)
+fs1 = 0.02;
+n = -2:2;
+x1 = cos(2 * pi * n * fm / fs1);
+subplot(2, 2, 2);
+stem(n, x1);
+hold on;
+plot(n, x1);
+title('Discrete Time Signal x(n) with fs < 2fm');
+xlabel('n');
+ylabel('x(n)');
+
+% Discrete-Time Signal 2 (fs < 2fm)
+fs2 = 0.04;
+n2 = -2:2;
+x2 = cos(2 * pi * fm * n2 / fs2);
+subplot(2, 2, 3);
+stem(n2, x2);
+hold on;
+plot(n2, x2);
+title('Discrete Time Signal x(n) with fs=2fm');
+xlabel('n');
+ylabel('x(n)');
+
+% Corrected discrete signal (fs > 2fm)
+n2 = -50:50;
+fs3 = 0.5;
+x3 = cos(2 * pi * fm * n2 / fs3);
+subplot(2, 2, 4);
+grid on;
+stem(n2, x3);
+hold on;
+plot(n2, x3);
+title('Discrete Time Signal x(n) with fs<2fm');
+xlabel('n');
+ylabel('x(n)');
+
+
+
+stem(n2, x2, 'filled'); hold on; plot(n2, x2); grid on;
+
+#######################################################################....array  operations .....
+1)) Array creation
+% Row and column vectors
+row = [1 2 3 4];
+col = [1; 2; 3; 4];
+
+% Using colon operator
+a = 1:5;        % 1 2 3 4 5
+b = 0:2:10;     % 0 2 4 6 8 10
+
+% Using linspace
+c = linspace(0,1,5); % 5 points between 0 and 1
+
+% Zeros, Ones, and Identity
+Z = zeros(3,4);   % 3x4 zero matrix
+O = ones(2,5);    % 2x5 ones matrix
+I = eye(3);       % 3x3 identity matrix
+
+2) Access element
+
+A = [10 20 30; 40 50 60; 70 80 90];
+
+% Access single element
+elem = A(2,3);  % 2nd row, 3rd column -> 60
+
+% Access entire row or column
+row2 = A(2,:);  % all columns of row 2
+col3 = A(:,3);  % all rows of column 3
+
+% Submatrix
+subA = A(1:2, 2:3); % rows 1-2, cols 2-3
+
+3))) Arithmetic operatio
+
+X = [1 2; 3 4];
+Y = [5 6; 7 8];
+
+% Element-wise addition, subtraction, multiplication, division
+add = X + Y;
+sub = X - Y;
+mul = X .* Y;   % element-wise multiplication
+div = X ./ Y;   % element-wise division
+
+% Matrix multiplication
+matmul = X * Y; % standard matrix multiplication
+
+% Scalar operations
+X_plus_5 = X + 5;
+X_times_2 = X * 2;
+
+4)))Function
+
+% Sum, mean, max, min
+total = sum(X);      % sum of columns
+total_rows = sum(X,2); % sum of rows
+average = mean(X);
+maximum = max(X(:));
+minimum = min(X(:));
+
+% Size, length, reshape
+[m,n] = size(X);
+len = length(X);
+X_reshaped = reshape(X,1,4); % flatten to row vector
+
+% Transpose
+X_T = X';  % transpose
+
+5))) Logical
+
+X = [1 2 3; 4 5 6];
+Y = X > 3;   % element-wise comparison -> [0 0 0; 1 1 1]
+
+% Find indices
+idx = find(X > 3);  % returns linear indices
+
+6))) Concate two array
+
+A = [1 2]; B = [3 4];
+
+% Horizontal concatenation
+C = [A B];  % [1 2 3 4]
+
+% Vertical concatenation
+D = [A; B]; % [1 2; 3 4]
+
+% Appending row or column
+X = [X; [7 8]];   % add row
+X = [X, [9;10;11]]; % add column
+
+7)))Special
+
+X = [1 2; 3 4];
+
+% Diagonal
+d = diag(X);        % extract diagonal
+D = diag([5 6]);    % create diagonal matrix
+
+% Element-wise power and sqrt
+Y = X.^2;          % each element squared
+Z = sqrt(X);       % square root
+
+% Sum of all elements
+total = sum(X(:));
+
+8))) Sorting and searching
+
+A = [3 1 2];
+sorted_A = sort(A);        % ascending
+[sorted_A_desc, idx] = sort(A,'descend');
+
+% Find specific values
+pos = find(A == 2);       % indices where A equals 2
+
+
+9)))Matrix operation
+
+X = [1 2; 3 4];
+
+% Determinant and inverse
+detX = det(X);
+invX = inv(X);
+
+% Rank
+r = rank(X);
+
+% Eigenvalues and Eigenvectors
+[evec,eval] = eig(X);
+
+
+
+###########################################################################.......................filter.....................
+
+Fs = 1000;          % Sampling frequency in Hz
+Fc = 100;           % Cutoff frequency in Hz
+N = 50;             % Filter order
+
+% Normalized cutoff frequency
+Wn = Fc/(Fs/2);
+
+% Design FIR filter using Hamming window
+b = fir1(N, Wn, 'low', hamming(N+1));
+
+% Frequency response
+freqz(b,1,1024,Fs);
+title('Low-Pass FIR Filter');
+
+
+
+Fc = 200;           % Cutoff frequency
+Wn = Fc/(Fs/2);
+
+b = fir1(N, Wn, 'high', hamming(N+1));
+freqz(b,1,1024,Fs);
+title('High-Pass FIR Filter');
+
+Fc1 = 100;          % Lower cutoff
+Fc2 = 300;          % Upper cutoff
+Wn = [Fc1 Fc2]/(Fs/2);
+
+b = fir1(N, Wn, 'bandpass', hamming(N+1));
+freqz(b,1,1024,Fs);
+title('Band-Pass FIR Filter');
+
+
+Fc1 = 100;          % Lower stop
+Fc2 = 300;          % Upper stop
+Wn = [Fc1 Fc2]/(Fs/2);
+
+b = fir1(N, Wn, 'stop', hamming(N+1));
+freqz(b,1,1024,Fs);
+title('Band-Stop FIR Filter');
+
+
+
+###################################    Manually #########################
+
+clc; clear; close all;
+
+% Input signal
+x = [1, 2, 3, 4];   
+N = length(x);
+
+% Initialize DFT output
+X = zeros(1, N);
+
+% Compute DFT manually
+for k = 0:N-1
+    for n = 0:N-1
+        X(k+1) = X(k+1) + x(n+1) * exp(-1j*2*pi*k*n/N);
+    end
+end
+
+% Display result
+disp('DFT of x:');
+disp(X);
+
+% Plot magnitude and phase
+n = 0:N-1;
+figure;
+subplot(2,1,1);
+stem(n, abs(X));
+title('Magnitude of DFT');
+xlabel('k'); ylabel('|X[k]|');
+
+subplot(2,1,2);
+stem(n, angle(X));
+title('Phase of DFT');
+xlabel('k'); ylabel('Angle X[k]');
+
+
+
+
+
+
+........
+
+clc; clear; close all;
+
+X = [10, -2+2j, -2, -2-2j];  % Example DFT result
+N = length(X);
+
+% Initialize IDFT output
+x_idft = zeros(1, N);
+
+% Compute IDFT manually
+for n = 0:N-1
+    for k = 0:N-1
+        x_idft(n+1) = x_idft(n+1) + X(k+1) * exp(1j*2*pi*k*n/N);
+    end
+    x_idft(n+1) = x_idft(n+1)/N;  % divide by N
+end
+
+disp('IDFT of X:');
+disp(x_idft);
+
+% Plot the reconstructed signal
+figure;
+stem(0:N-1, real(x_idft));
+title('Reconstructed Signal from IDFT');
+xlabel('n'); ylabel('x[n]');
+
+....................
+
+clc; clear; close all;
+
+% Input signal (length must be power of 2)
+x = [1, 2, 3, 4];  
+N = length(x);
+
+% Split into even and odd indices
+x_even = x(1:2:end);  % x[0], x[2]
+x_odd  = x(2:2:end);  % x[1], x[3]
+
+% Compute 2-point DFT for even and odd parts
+X_even = zeros(1, N/2);
+X_odd  = zeros(1, N/2);
+
+for k = 0:(N/2-1)
+    X_even(k+1) = x_even(1) + x_even(2)*exp(-1j*2*pi*k/(N/2));
+    X_odd(k+1)  = x_odd(1)  + x_odd(2) *exp(-1j*2*pi*k/(N/2));
+end
+
+% Combine using FFT formula
+X_fft_manual = zeros(1, N);
+for k = 0:(N/2-1)
+    W = exp(-1j*2*pi*k/N);
+    X_fft_manual(k+1)       = X_even(k+1) + W*X_odd(k+1);
+    X_fft_manual(k+1+N/2)   = X_even(k+1) - W*X_odd(k+1);
+end
+
+% Display result
+disp('Manual FFT result:');
+disp(X_fft_manual);
+
+% Compare with MATLAB built-in FFT
+disp('MATLAB fft(x):');
+disp(fft(x));
+
+
+
+
+
+
+
+
+
+
+
+                     
